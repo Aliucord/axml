@@ -105,7 +105,13 @@ public class StringItems extends ArrayList<StringItem> {
 			} else {
 				item.dataOffset = offset;
 				map.put(stringData, offset);
-				if (useUTF8) {
+				if (stringData == null) {
+					int length = 0;
+
+					baos.write(length);
+					baos.write(0);
+					offset += 2;
+				} else if (useUTF8) {
 					int length = stringData.length();
 					byte[] data = stringData.getBytes("UTF-8");
 					int u8lenght = data.length;
