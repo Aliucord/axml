@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/Sable/axml/workflows/Axml%20CI/badge.svg?branch=develop)](https://github.com/Sable/axml/actions)
-
 # axml
-The axml components for reading binary Android XML files in Soot
+
+A library for reading and writing axml (Android Binary XML) and arsc (Android Package Resource Table) files.
+Forked and fixed for use in [Aliucord Manager](https://github.com/Aliucord/AliucordManager).

@@ -57,7 +57,7 @@ import pxb.android.StringItems;
  * </ul>
  * 
  * <p>
- * Thanks to the the following projects
+ * Thanks to the following projects
  * <ul>
  * <li>android4me https://code.google.com/p/android4me/</li>
  * <li>Apktool https://code.google.com/p/android-apktool</li>
