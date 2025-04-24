@@ -1,34 +1,46 @@
 name: Build
 
-concurrency:
-  group: "build"
-  cancel-in-progress: true
-
 on:
   push:
-    branches:
-      - master
+    paths-ignore: [ "**.md" ]
+  pull_request:
+    paths-ignore: [ "**.md" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    timeout-minutes: 4
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup JDK 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           java-version: 11
           distribution: zulu
           cache: gradle
 
+      - name: Build
+        if: github.ref_name != 'master'
+        run: |
+          cd $GITHUB_WORKSPACE
+          chmod +x gradlew
+          ./gradlew :publishToMavenLocal --no-daemon
+
       - name: Build and Maven publish
+        if: github.ref_name == 'master'
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         run: |
           cd $GITHUB_WORKSPACE
           chmod +x gradlew
-          ./gradlew publish --no-daemon
+          ./gradlew :publishToMavenLocal :publish --no-daemon
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: axml
+          path: ~/.m2/repository/**
